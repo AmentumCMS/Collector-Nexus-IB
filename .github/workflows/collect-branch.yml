@@ -134,19 +134,21 @@ jobs:
 
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
-          git bundle create --progress ../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
+          cd ..
+          git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
           echo -e "\nDirectory Listing\n$(ls -1sht ../*)"
 
       - name: Generate Hash
         run: |
-          sha256sum -b ../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle | tee \
-            ../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle.sha
+          cd..
+          sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle | tee \
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle.sha
 
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
-          path: ../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle*
+          path: $PWD/../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle*
           if-no-files-found: error
 
       - name: TARCHIVE Repo1 code base for ${{ vars.COLLECTOR }}
@@ -169,7 +171,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz
-          path: ../${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
+          path: $PWD/../${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
           if-no-files-found: error
 
   MakeISO:
