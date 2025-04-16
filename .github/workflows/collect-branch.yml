@@ -128,6 +128,7 @@ jobs:
       - name: Update Submodules if needed
         shell: bash
         run: |
+          set +e
           git submodule update --init --recursive --remote
           git commit -am "Update Submodules"
           if [ $? -eq 1 ];then
