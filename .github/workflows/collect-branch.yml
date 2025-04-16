@@ -152,7 +152,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
-          path: ${{ env.PWD }}/../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle*
+          path: ${{ github.workspace }}/../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle*
           if-no-files-found: error
 
       - name: TARCHIVE Repo1 code base for ${{ vars.COLLECTOR }}
@@ -175,7 +175,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz
-          path: ${{ env.PWD }}/../${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
+          path: ${{ github.workspace }}/../${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
           if-no-files-found: error
 
   MakeISO:
