@@ -145,10 +145,10 @@ jobs:
 
       - name: TARCHIVE Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
-          tar -cv --remove-files \
-            -f ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz ${{ vars.COLLECTOR }} \
-            | tee ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tg
-          echo -e "\nDirectory Listing\n$(ls -Alh
+          tar -cv \
+            -f ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz . \
+            | tee ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.txt
+          echo -e "\nDirectory Listing\n$(ls -AlSsh)"
 
       - name: Generate TARchive Hash
         run: |
