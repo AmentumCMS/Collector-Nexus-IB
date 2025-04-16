@@ -144,7 +144,7 @@ jobs:
 
       - name: Generate Hash
         run: |
-          cd..
+          cd ..
           sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle | tee \
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle.sha
 
