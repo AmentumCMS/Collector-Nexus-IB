@@ -124,12 +124,14 @@ jobs:
 
       - name: Update Submodules if needed
         shell: bash
-        run: git submodule update --init --recursive --remote
+        run: |
+          git submodule update --init --recursive --remote
+          git commit -am "Update Submodules"
 
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
           git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
-          echo -e "\nDirectory Listing\n$(ls -Alht *)"
+          echo -e "\nDirectory Listing\n$(ls -1sht *)"
 
       - name: Generate Hash
         run: |
@@ -148,18 +150,20 @@ jobs:
           tar -cv \
             -f ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz . \
             | tee ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.txt
-          echo -e "\nDirectory Listing\n$(ls -AlSsh)"
 
       - name: Generate TARchive Hash
         run: |
           sha256sum -b ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz | tee \
             ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.sha
-      
+
+      - name: Directory Listing
+        run: echo -e "\nDirectory Listing for $PWD\n$(ls -1Ssh)"
+        
       - name: Upload Tarchive, ToC, and hash
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
-          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz*
+          name: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz
+          path: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
           if-no-files-found: error
 
   MakeISO:
