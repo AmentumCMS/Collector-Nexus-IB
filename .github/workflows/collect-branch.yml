@@ -128,8 +128,8 @@ jobs:
       - name: Update Submodules if needed
         shell: bash
         run: |
-          set +e
           git submodule update --init --recursive --remote
+          set +e
           git commit -am "Update Submodules"
           if [ $? -eq 1 ];then
             echo "No push required"
@@ -139,8 +139,7 @@ jobs:
 
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
-          cd ..
-          git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
+          git bundle create --progress ../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
           echo -e "\nDirectory Listing\n$(ls -1sht ../*)"
 
       - name: Generate Hash
