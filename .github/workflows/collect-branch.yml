@@ -171,8 +171,8 @@ jobs:
       - name: Upload Tarchive, ToC, and hash
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
-          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz*
+          name: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz
+          path: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
           if-no-files-found: error
 
   MakeISO:
