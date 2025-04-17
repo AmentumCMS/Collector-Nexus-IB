@@ -168,7 +168,7 @@ jobs:
             ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.sha
 
       - name: Directory Listing
-        run: cd .. && echo -e "\nDirectory Listing for $PWD\n$(ls -1Ssh)"
+        run: echo -e "\nDirectory Listing for $PWD\n$(ls -1Ssh)"
 
       - name: Upload Tarchive, ToC, and hash
         uses: actions/upload-artifact@v4
