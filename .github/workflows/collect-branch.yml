@@ -212,7 +212,7 @@ jobs:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.helm
           path: ${{ vars.COLLECTOR }}/helmchart/*
           if-no-files-found: error
-  
+
       - name: Show Artifacts
         run: ls -Alht ${{ vars.COLLECTOR }}
 
@@ -234,12 +234,12 @@ jobs:
           tree ${{ vars.COLLECTOR }} \
             | tee ${{ vars.COLLECTOR }}/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.txt
 
-      # - name: Upload ISO ToC artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.txt
-      #     path: ${{ vars.COLLECTOR }}/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.txt
-      #     if-no-files-found: error
+      - name: Upload ISO ToC artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.txt
+          path: ${{ vars.COLLECTOR }}/${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.iso.txt
+          if-no-files-found: error
 
       - name: Make ISO
         run: |
