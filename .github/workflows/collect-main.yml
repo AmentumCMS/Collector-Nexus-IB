@@ -112,6 +112,9 @@ jobs:
   Code:
     needs: [Date]
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -126,12 +129,20 @@ jobs:
 
       - name: Update Submodules if needed
         shell: bash
-        run: git submodule update --init --recursive --remote
+        run: |
+          git submodule update --init --recursive --remote
+          set +e
+          git commit -am "Update Submodules"
+          if [ $? -eq 1 ];then
+            echo "No push required"
+          else
+            git push
+          fi
 
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
           git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
-          echo -e "\nDirectory Listing\n$(ls -Alht *)"
+          echo -e "\nDirectory Listing\n$(ls -1sht *)"
 
       - name: Generate Bundle Hash
         run: |
@@ -147,16 +158,18 @@ jobs:
 
       - name: TARCHIVE Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
-          tar -cv --remove-files \
-            -f ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz ${{ vars.COLLECTOR }} \
-            | tee ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tg
-          echo -e "\nDirectory Listing\n$(ls -Alh
+          tar -cvC .. \
+            -f ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz Collector-* \
+            | tee ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.txt
 
       - name: Generate TARchive Hash
         run: |
           sha256sum -b ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz | tee \
             ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.sha
-      
+
+      - name: Directory Listing
+        run: cd .. && echo -e "\nDirectory Listing for $PWD\n$(ls -1Ssh)"
+
       - name: Upload Tarchive, ToC, and hash
         uses: actions/upload-artifact@v4
         with:

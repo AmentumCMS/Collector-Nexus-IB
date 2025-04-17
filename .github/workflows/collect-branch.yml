@@ -139,43 +139,40 @@ jobs:
 
       - name: Bundle Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
-          git bundle create --progress ../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
-          echo -e "\nDirectory Listing\n$(ls -1sht ../*)"
+          git bundle create --progress ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle --all
+          echo -e "\nDirectory Listing\n$(ls -1sht *)"
 
-      - name: Generate Hash
+      - name: Generate Bundle Hash
         run: |
-          cd ..
           sha256sum -b ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle | tee \
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle.sha
 
-      - name: Upload bundle
+      - name: Upload bundle and hash
         uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
-          path: ${{ github.workspace }}/../${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle*
+          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle*
           if-no-files-found: error
 
       - name: TARCHIVE Repo1 code base for ${{ vars.COLLECTOR }}
         run: |
-          cd ..
-          tar -cv \
+          tar -cvC .. \
             -f ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz Collector-* \
             | tee ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.txt
 
       - name: Generate TARchive Hash
         run: |
-          cd ..
           sha256sum -b ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz | tee \
             ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz.sha
 
       - name: Directory Listing
         run: cd .. && echo -e "\nDirectory Listing for $PWD\n$(ls -1Ssh)"
-        
+
       - name: Upload Tarchive, ToC, and hash
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz
-          path: ${{ github.workspace }}/../${{ vars.COLLECTOR }}-code-${{ needs.Date.outputs.Date }}.tgz*
+          name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
+          path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz*
           if-no-files-found: error
 
   MakeISO:
