@@ -3,4 +3,4 @@ registry1.dso.mil:
         ironbank/sonatype/nexus/nexus: (^3.75.0-06$|^3.79.0-09$|^3.83.2-01$|^3.86.2-01$)
 docker.io:
     images-by-tag-regex:
-        sonatype/nexus3: (^3.75.0-ubi$|^3.80.0-java17-ubi$|^3.83.2-java17-ubi$|$3.87.1-ubi^|^3.88.0-ubi$)
+        sonatype/nexus3: (^3.75.0-ubi$|^3.80.0-java17-ubi$|^3.83.2-java17-ubi$|^3.87.1-ubi$|^3.88.0-ubi$)
