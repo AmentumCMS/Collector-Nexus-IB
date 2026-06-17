@@ -20,5 +20,5 @@
 	path = openjdk17-devel
 	url = https://repo1.dso.mil/dsop/redhat/openjdk/openjdk17.x/openjdk17-devel
 [submodule "nexus-ib"]
-	path = nexus-ib
+	path = nexus-ib-source
 	url = https://repo1.dso.mil/dsop/sonatype/nexus/nexus.git
