@@ -1,6 +1,6 @@
 registry1.dso.mil:
-    images-by-tag-regex:
-        ironbank/sonatype/nexus/nexus: (^3.93.0-06$)
+  images-by-tag-regex:
+    ironbank/sonatype/nexus/nexus: (^3.93.1-04$)
 docker.io:
-    images-by-tag-regex:
-        sonatype/nexus3: (^3.93.0-ubi$)
+  images-by-tag-regex:
+    sonatype/nexus3: ^3.93.1-.*
