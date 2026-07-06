@@ -1,7 +1,10 @@
 # Ignore .vagrant
 .vagrant*
 
-# Ignore subdirectories
+# Ignore common download dirs
+**/Nexus-IB/
+
+# Don't Ignore subdirectories
 !.github/**
 !nginx/
 !.github/
