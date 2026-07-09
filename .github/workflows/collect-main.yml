@@ -484,6 +484,14 @@ jobs:
           | tee ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.helm.sha
           echo -e "\n\nList files:\n$(pwd;ls -1SSh)"
 
+      - name: Download binaries
+        run: |
+          mkdir -p ${{ vars.COLLECTOR }}/binaries
+          cd ${{ vars.COLLECTOR }}/binaries
+          # Add commands to download necessary binaries here
+          curl -LO https://download.sonatype.com/nexus/3/nexus-3.93.2-01-linux-x86_64.tar.gz
+          sha256sum -b nexus-3.93.2-01-linux-x86_64.tar.gz | tee ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.binaries.sha
+
       - name: Upload Helmchart
         uses: actions/upload-artifact@v7
         with:
