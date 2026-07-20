@@ -500,7 +500,9 @@ jobs:
           if-no-files-found: error
 
       - name: Show Artifacts
-        run: ls -1sh ${{ vars.COLLECTOR }}
+        run: |
+          echo -e "\nListing files in ${{ vars.COLLECTOR }}:\n$(ls -1shR ${{ vars.COLLECTOR }})"
+          echo -e "\nTree view of files in ${{ vars.COLLECTOR }}:\n$(tree ${{ vars.COLLECTOR }})"
 
       - name: Generate Artifact Hash File
         run: |
