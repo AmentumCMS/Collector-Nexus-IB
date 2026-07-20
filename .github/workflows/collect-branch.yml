@@ -487,8 +487,12 @@ jobs:
           mkdir -p ${{ vars.COLLECTOR }}/binaries
           cd ${{ vars.COLLECTOR }}/binaries
           # Add commands to download necessary binaries here
-          curl -LO https://download.sonatype.com/nexus/3/nexus-3.93.2-01-linux-x86_64.tar.gz
-          sha256sum -b nexus-3.93.2-01-linux-x86_64.tar.gz | tee ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.binaries.sha
+          for VERSION in 3.94.0-12; do
+            curl -LO https://download.sonatype.com/nexus/3/nexus-$VERSION-linux-x86_64.tar.gz
+            curl -LO https://download.sonatype.com/nexus/3/nexus-$VERSION-win-x86_64.zip
+            sha256sum -b nexus-$VERSION-linux-x86_64.tar.gz | tee ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.binaries.sha
+            sha256sum -b nexus-$VERSION-win-x86_64.zip | tee -a ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.binaries.sha
+          done
 
       - name: Upload Helmchart
         uses: actions/upload-artifact@v7
@@ -498,7 +502,9 @@ jobs:
           if-no-files-found: error
 
       - name: Show Artifacts
-        run: ls -1sh ${{ vars.COLLECTOR }}
+        run: |
+          echo -e "\nListing files in ${{ vars.COLLECTOR }}:\n$(ls -1shR ${{ vars.COLLECTOR }})"
+          echo -e "\nTree view of files in ${{ vars.COLLECTOR }}:\n$(tree ${{ vars.COLLECTOR }})"
 
       - name: Generate Artifact Hash File
         run: |
