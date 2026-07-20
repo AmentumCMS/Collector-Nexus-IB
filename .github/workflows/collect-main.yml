@@ -491,9 +491,7 @@ jobs:
           # Add commands to download necessary binaries here
           for VERSION in 3.94.0-12; do
             curl -LO https://download.sonatype.com/nexus/3/nexus-$VERSION-linux-x86_64.tar.gz
-            curl -LO https://download.sonatype.com/nexus/3/nexus-$VERSION-win-x86_64.zip
             sha256sum -b nexus-$VERSION-linux-x86_64.tar.gz | tee ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.binaries.sha
-            sha256sum -b nexus-$VERSION-win-x86_64.zip | tee -a ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.binaries.sha
           done
 
       - name: Upload Helmchart
